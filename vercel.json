@@ -10,15 +10,7 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    {
-      "src": "/(.*\\.[jt]s)",
-      "headers": { "content-type": "application/javascript" }
-    },
-    {
-      "src": "/(.*\\.js\\.map)",
-      "headers": { "content-type": "application/json" }
-    },
+    { "handle": "filesystem" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
