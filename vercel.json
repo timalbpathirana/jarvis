@@ -11,12 +11,5 @@
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "env": {
-    "OPENAI_API_KEY": "@openai_api_key",
-    "PINECONE_API_KEY": "@pinecone_api_key",
-    "PINECONE_ENVIRONMENT": "@pinecone_environment",
-    "PINECONE_INDEX": "@pinecone_index",
-    "JARVIS_API_KEY": "@jarvis_api_key"
-  }
+  ]
 }
