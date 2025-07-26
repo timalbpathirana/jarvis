@@ -19,7 +19,9 @@ interface UploadResponse {
 
 // API base URL - points to the API deployed on Vercel
 // In development, this can be overridden with an environment variable
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? 'https://jarvisui.vercel.app/api' : '/api')
 
 // API key from environment
 const API_KEY = import.meta.env.VITE_JARVIS_API_KEY || ''
@@ -90,11 +92,28 @@ export const queryJarvis = async (
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.detail || 'Error querying JARVIS')
+      let errorMessage = 'Error querying JARVIS'
+      try {
+        const errorData = await response.json()
+        errorMessage = errorData.detail || errorMessage
+      } catch (parseError) {
+        // If JSON parsing fails, use status text
+        errorMessage = `Error ${response.status}: ${response.statusText}`
+      }
+      throw new Error(errorMessage)
     }
 
-    return await response.json()
+    const text = await response.text()
+    if (!text) {
+      throw new Error('Empty response from server')
+    }
+
+    try {
+      return JSON.parse(text)
+    } catch (parseError) {
+      console.error('Failed to parse response JSON:', text)
+      throw new Error('Invalid response format from server')
+    }
   } catch (error) {
     console.error('Error querying JARVIS:', error)
     throw error
