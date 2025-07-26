@@ -8,6 +8,7 @@ import os
 
 from vector_store import VectorStoreManager
 from llm import LLMManager
+from document_processor import DocumentProcessor
 
 # Create FastAPI app
 app = FastAPI(
@@ -58,6 +59,7 @@ app.add_middleware(
 # Initialize components
 vector_store_manager = VectorStoreManager()
 llm_manager = LLMManager(vector_store_manager=vector_store_manager)
+document_processor = DocumentProcessor()
 
 
 # Models
@@ -134,9 +136,6 @@ async def upload_document(file: UploadFile = File(...)):
     """
     Upload a PDF document to be processed and stored in the vector database
     """
-    from document_processor import DocumentProcessor
-    document_processor = DocumentProcessor()
-    
     # Check file extension
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported")
