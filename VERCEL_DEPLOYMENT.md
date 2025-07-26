@@ -25,8 +25,9 @@ In Vercel, you'll need to configure these environment variables:
 
 - `OPENAI_API_KEY` - Your OpenAI API key
 - `PINECONE_API_KEY` - Your Pinecone API key
-- `PINECONE_ENVIRONMENT` - Your Pinecone environment (e.g., "gcp-starter")
-- `PINECONE_INDEX` - Your Pinecone index name (e.g., "jarvis-knowledge")
+- `PINECONE_CLOUD` - The cloud provider for your serverless index (e.g., "aws")
+- `PINECONE_REGION` - The region for your serverless index (e.g., "us-east-1")
+- `PINECONE_INDEX_NAME` - Your Pinecone index name (e.g., "jarvis-knowledge")
 - `JARVIS_API_KEY` - A secret API key for securing your endpoints (generate a random string)
 
 For the frontend, add these environment variables:

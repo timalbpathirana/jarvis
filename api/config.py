@@ -10,10 +10,8 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 # Pinecone Configuration
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
 PINECONE_INDEX_NAME = os.environ.get("PINECONE_INDEX_NAME", "jarvis-knowledge")
-
-# The PINECONE_ENVIRONMENT variable holds the region for serverless indexes (e.g., "us-east-1")
-PINECONE_REGION = os.environ.get("PINECONE_ENVIRONMENT")
-PINECONE_CLOUD = os.environ.get("PINECONE_CLOUD", "aws")  # Defaulting to 'aws', override in Vercel if needed
+PINECONE_CLOUD = os.environ.get("PINECONE_CLOUD")
+PINECONE_REGION = os.environ.get("PINECONE_REGION")
 
 # Document Processing
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
@@ -26,7 +24,8 @@ CHUNK_OVERLAP = 50
 REQUIRED_VARS = [
     "OPENAI_API_KEY",
     "PINECONE_API_KEY",
-    "PINECONE_ENVIRONMENT",
+    "PINECONE_CLOUD",
+    "PINECONE_REGION",
 ]
 
 missing_vars = [var for var in REQUIRED_VARS if not os.environ.get(var)]
