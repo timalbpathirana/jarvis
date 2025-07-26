@@ -8,9 +8,9 @@ export default defineConfig({
     proxy: {
       // Proxy API requests to local backend during development
       '/api': {
-        target: 'http://localhost:8001',
+        target: 'http://localhost:8000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/api/, '/api'),
       },
     },
   },

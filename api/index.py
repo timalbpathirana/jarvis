@@ -1,5 +1,5 @@
 from typing import List, Dict, Any
-from fastapi import FastAPI, HTTPException, Depends, Request, Header
+from fastapi import FastAPI, HTTPException, Depends, Request, Header, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
@@ -47,6 +47,8 @@ app.add_middleware(
         # For development
         "http://localhost:5173",
         "http://localhost:3000",
+        "https://jarvisui.vercel.app",
+        "https://inside-my-mind.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST"],
@@ -94,6 +96,12 @@ class QueryResponse(BaseModel):
     context_used: bool
 
 
+class UploadResponse(BaseModel):
+    message: str
+    documents_added: int
+    filename: str
+
+
 @app.get("/api")
 async def root():
     return {"message": "JARVIS RAG API is running"}
@@ -119,6 +127,55 @@ async def query_documents(request: QueryRequest):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating response: {str(e)}")
+
+
+@app.post("/api/upload", dependencies=[Depends(verify_api_key)])
+async def upload_document(file: UploadFile = File(...)):
+    """
+    Upload a PDF document to be processed and stored in the vector database
+    """
+    from document_processor import DocumentProcessor
+    document_processor = DocumentProcessor()
+    
+    # Check file extension
+    if not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported")
+    
+    # Read file content
+    file_content = await file.read()
+    
+    try:
+        # Process the document
+        chunks = document_processor.process_pdf_from_upload(file_content, file.filename)
+        
+        # Add to vector store
+        documents_added = vector_store_manager.add_documents(chunks)
+        
+        return UploadResponse(
+            message="Document uploaded and processed successfully",
+            documents_added=documents_added,
+            filename=file.filename
+        )
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing document: {str(e)}")
+
+
+@app.post("/api/clear", dependencies=[Depends(verify_api_key)])
+async def clear_vector_store():
+    """
+    Clear all vectors from the store (admin use only)
+    """
+    try:
+        success = vector_store_manager.delete_all()
+        
+        if success:
+            return {"message": "Vector store cleared successfully"}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to clear vector store")
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error clearing vector store: {str(e)}")
 
 # For local development
 if __name__ == "__main__":
