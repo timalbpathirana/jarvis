@@ -35,8 +35,8 @@ class VectorStoreManager:
                     dimension=config.EMBEDDING_DIMENSION,
                     metric="cosine",
                     spec=ServerlessSpec(
-                        cloud="aws",
-                        region=config.PINECONE_ENVIRONMENT
+                        cloud=config.PINECONE_CLOUD,
+                        region=config.PINECONE_REGION
                     )
                 )
             

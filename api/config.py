@@ -4,23 +4,37 @@ from dotenv import load_dotenv
 # Try to load environment variables from .env file if it exists (for local development)
 load_dotenv()
 
-# Environment variables
+# OpenAI Configuration
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+# Pinecone Configuration
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
-PINECONE_ENVIRONMENT = os.environ.get("PINECONE_ENVIRONMENT")
-PINECONE_INDEX = os.environ.get("PINECONE_INDEX") or "jarvis-knowledge"
+PINECONE_ENVIRONMENT = os.environ.get("PINECONE_ENVIRONMENT", "gcp-starter")
+PINECONE_INDEX_NAME = os.environ.get("PINECONE_INDEX_NAME", "jarvis-knowledge")
+PINECONE_CLOUD = os.environ.get("PINECONE_CLOUD", "aws")
+PINECONE_REGION = os.environ.get("PINECONE_REGION", "us-east-1")
+
+# Document Processing
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
 # Constants for document processing
 CHUNK_SIZE = 512
 CHUNK_OVERLAP = 50
-MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
 
 # Validate environment variables
-if not OPENAI_API_KEY:
-    raise ValueError("OPENAI_API_KEY environment variable is not set")
+REQUIRED_VARS = [
+    "OPENAI_API_KEY",
+    "PINECONE_API_KEY",
+]
 
-if not PINECONE_API_KEY:
-    raise ValueError("PINECONE_API_KEY environment variable is not set")
+missing_vars = [var for var in REQUIRED_VARS if not globals().get(var)]
+if missing_vars:
+    raise EnvironmentError(f"Missing required environment variables: {', '.join(missing_vars)}")
 
-if not PINECONE_ENVIRONMENT:
-    raise ValueError("PINECONE_ENVIRONMENT environment variable is not set") 
+# LLM Configuration
+LLM_MODEL = "gpt-4-turbo"
+LLM_TEMPERATURE = 0.1
+
+# Embedding model
+EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_DIMENSION = 1536 
