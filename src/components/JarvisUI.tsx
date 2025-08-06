@@ -816,9 +816,7 @@ const JarvisUI = () => {
                               AI ASSISTANT ONLINE
                             </div>
                           </div>
-                          <div className="text-xs text-cyan-600">
-                            v2.5.3
-                          </div>
+                          <div className="text-xs text-cyan-600">v2.5.3</div>
                         </div>
                       </div>
 
@@ -833,6 +831,12 @@ const JarvisUI = () => {
                             >
                               <p className="mt-6 text-cyan-300">
                                 May I know your name?
+                              </p>
+                              <p className="mt-2 text-xs italic text-gray-400">
+                                This app only asks for your name to personalize
+                                the experience. No data is stored, tracked, or
+                                shared — everything stays in your browser
+                                session.
                               </p>
                             </motion.div>
                           )}
