@@ -69,7 +69,7 @@ const JarvisUI = () => {
 
   // Introduction message
   const introMessage =
-    "Hi, I'm JARVIS — Timal's personal AI assistant. I'm here to help you explore his work, mindset, and approach to engineering. Timal built me so you can see not just what he's done, but how he thinks. Curious about anything? Just ask."
+    "Hi, I'm Timal's personal AI assistant. I'm here to help you explore his work, mindset, and approach to engineering. Timal built me so you can see not just what he's done, but how he thinks. Curious about anything? Just ask."
 
   // Define panels with content
   const panels: HolographicPanel[] = [
@@ -816,11 +816,8 @@ const JarvisUI = () => {
                               AI ASSISTANT ONLINE
                             </div>
                           </div>
-                          <h2 className="text-xl font-bold text-cyan-400">
-                            JARVIS
-                          </h2>
                           <div className="text-xs text-cyan-600">
-                            v2.5.3 • PERSONAL ASSISTANT
+                            v2.5.3
                           </div>
                         </div>
                       </div>
@@ -1235,14 +1232,17 @@ const JarvisUI = () => {
                         Objective
                       </h4>
                       <p className="leading-relaxed">
-                        Software Engineer with a passion for automation, DevOps,
-                        and generative AI. Strong expertise in C#/.NET,
-                        AI-driven development, cloud automation, and workflow
-                        optimization. Adept at identifying patterns,
-                        streamlining processes, and building scalable,
-                        AI-powered engineering solutions. Certified AWS AI
-                        Practitioner, continuously pushing boundaries in
-                        software engineering.
+                        Software Engineer with a passion for building
+                        AI-powered, scalable systems using C#/.NET, Python, and
+                        AWS. Skilled in prompt engineering, LLM integration, and
+                        deploying real-world generative AI solutions.
+                        Comfortable working with tools like OpenAI, Claude, and
+                        Pinecone, and exploring frameworks like LangChain
+                        through hands-on experimentation. Strong focus on
+                        backend architecture, automation, and cloud engineering.
+                        AWS Certified AI Practitioner, continuously learning and
+                        building systems that deliver meaningful business
+                        outcomes.
                       </p>
                     </div>
 
@@ -1252,10 +1252,11 @@ const JarvisUI = () => {
                           Key Focus Areas
                         </div>
                         <ul className="list-disc pl-5 text-sm">
-                          <li>AI-Driven Development</li>
-                          <li>DevOps & Automation</li>
-                          <li>Cloud Engineering</li>
-                          <li>Scalable Architecture</li>
+                          <li>Generative AI & Prompt Engineering</li>
+                          <li>Backend Development (C# / .NET)</li>
+                          <li>Cloud Automation (AWS)</li>
+                          <li>Scalable System Design</li>
+                          <li>LLM Integration & Tooling</li>
                         </ul>
                       </div>
                       <div>
@@ -1263,10 +1264,11 @@ const JarvisUI = () => {
                           Tech Stack
                         </div>
                         <ul className="list-disc pl-5 text-sm">
-                          <li>C# / .NET Ecosystem</li>
-                          <li>AWS / Azure Cloud</li>
-                          <li>Modern JavaScript</li>
-                          <li>Generative AI</li>
+                          <li>C# / .NET Core</li>
+                          <li>Python (FastAPI, scripting)</li>
+                          <li>AWS (Lambda, S3, RDS, Step Functions)</li>
+                          <li>SQL / PostgreSQL</li>
+                          <li>Generative AI (OpenAI, Claude, Pinecone)</li>
                         </ul>
                       </div>
                     </div>
@@ -1482,13 +1484,30 @@ const JarvisUI = () => {
                           <div className="space-y-3">
                             <div className="rounded border border-cyan-800/20 bg-cyan-900/5 p-3">
                               <h5 className="mb-2 font-medium text-cyan-300">
+                                Real-Time Data Engineering
+                              </h5>
+                              <p className="text-sm text-cyan-100">
+                                Led the end-to-end implementation of Change Data
+                                Capture (CDC) for the application database,
+                                enabling real-time streaming into Snowflake.
+                                Delivered technical spikes, wrote custom
+                                PostgreSQL scripts, and managed a high-risk RDS
+                                reboot. Built robust monitoring pipelines and
+                                dashboards to support quarterly OKRs and future
+                                AI-driven analytics at Zip.
+                              </p>
+                            </div>
+
+                            <div className="rounded border border-cyan-800/20 bg-cyan-900/5 p-3">
+                              <h5 className="mb-2 font-medium text-cyan-300">
                                 Automation & Productivity
                               </h5>
                               <p className="text-sm text-cyan-100">
-                                Optimized team productivity by developing
-                                Zip-Installie, an automated investigation tool,
-                                saving 64+ engineering hours monthly and earning
-                                the Seamless Zip Award.
+                                Developed Zip-Installie, an internal automation
+                                tool that diagnosed installment issues using
+                                logs and business rules. Integrated with JIRA
+                                and Slack, saving 64+ engineering hours per
+                                month and earning the Seamless Zip Award.
                               </p>
                             </div>
 
@@ -1497,11 +1516,11 @@ const JarvisUI = () => {
                                 Revenue Recovery
                               </h5>
                               <p className="text-sm text-cyan-100">
-                                Resolved 'Installment Stuck in Requested State'
-                                issues, recovering ~$180K in missed revenue.
-                                Used AWS Athena (SQL) and pgAdmin (RDS) for data
-                                validation, built fix and rollback scripts, and
-                                automated monitoring via a Slackbot cron job.
+                                Resolved the “Installment Stuck” issue,
+                                recovering ~$180K. Conducted root cause analysis
+                                using Athena SQL and pgAdmin, built fix/rollback
+                                scripts, and deployed a Slackbot for early
+                                detection and alerting.
                               </p>
                             </div>
 
@@ -1510,14 +1529,12 @@ const JarvisUI = () => {
                                 Feature Development
                               </h5>
                               <p className="text-sm text-cyan-100">
-                                Launched the Historic Statement Feature with
-                                zero incidents, earning recognition at ANZ Town
-                                Hall. Developed SQL scripts to retrieve
-                                historical data, ensured compliance by working
-                                with legal teams, implemented the solution in
-                                .NET/C#, refactored code for efficiency, defined
-                                business rules with stakeholders, and built
-                                Dynatrace dashboards for monitoring.
+                                Delivered the Historic Statement Feature with
+                                zero incidents. Handled end-to-end delivery:
+                                backend development in C#/.NET, compliance
+                                collaboration, SQL data retrieval, code
+                                refactoring, and Dynatrace dashboard creation.
+                                Recognized at ANZ Town Hall.
                               </p>
                             </div>
 
@@ -1526,29 +1543,24 @@ const JarvisUI = () => {
                                 Technical Support Excellence
                               </h5>
                               <p className="text-sm text-cyan-100">
-                                Resolved 183+ technical support tickets in a
-                                year, maintaining a backlog below 20.
-                                Streamlined TS ticket triaging by developing
-                                Zip-Installie, an automated issue analysis tool
-                                with JIRA dashboards for better visualization.
-                                Introduced root cause investigations, preventing
-                                SLA breaches and driving company-wide adoption
-                                of the process.
+                                Resolved 183+ technical support tickets while
+                                keeping the backlog below 20. Enhanced triaging
+                                with Zip-Installie’s JIRA dashboards. Introduced
+                                structured root cause investigations, reducing
+                                repeat issues and SLA breaches.
                               </p>
                             </div>
 
                             <div className="rounded border border-cyan-800/20 bg-cyan-900/5 p-3">
                               <h5 className="mb-2 font-medium text-cyan-300">
-                                Code Optimization
+                                Code Optimization & Observability
                               </h5>
                               <p className="text-sm text-cyan-100">
-                                Refactored statement processing by implementing
-                                the Strategy Pattern, reducing coupling with
-                                database-specific DbContexts. Increased unit
-                                test coverage to 80%+, updated AWS Step
-                                Functions task definitions, optimized Lambda
-                                environment variables, and streamlined
-                                CloudWatch log ingestion into Dynatrace for
+                                Refactored statement logic using the Strategy
+                                Pattern, reducing coupling and improving
+                                testability. Raised test coverage above 80%,
+                                optimized AWS Step Functions, Lambda variables,
+                                and enhanced log ingestion into Dynatrace for
                                 better observability.
                               </p>
                             </div>
@@ -1558,14 +1570,11 @@ const JarvisUI = () => {
                                 Team Culture & Leadership
                               </h5>
                               <p className="text-sm text-cyan-100">
-                                Advocated for psychological safety, fostering an
-                                environment where feedback is constructive and
-                                non-threatening. Led by example in kindness and
-                                trust-building, emphasizing the limitations of
-                                text-based communication. Applied insights from
-                                the "Fostering Psychological Safety & Belonging
-                                on Teams" course (Udemy, Nov 2023) to enhance
-                                team collaboration and inclusivity.
+                                Championed psychological safety and inclusive
+                                communication. Applied frameworks from the
+                                "Fostering Psychological Safety & Belonging"
+                                course (Udemy, Nov 2023) to improve team
+                                onboarding, collaboration, and trust.
                               </p>
                             </div>
                           </div>
