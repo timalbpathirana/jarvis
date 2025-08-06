@@ -61,10 +61,16 @@ class LLMManager:
             # Extract sources for citation
             sources = self._extract_sources(docs)
             
+            # Extract token usage (available in the underlying client response)
+            token_usage = {}
+            if hasattr(response, "llm_output") and response.llm_output:
+                token_usage = response.llm_output.get("token_usage", {})
+            
             return {
                 "answer": response.content,
                 "sources": sources,
-                "context_used": True
+                "context_used": True,
+                "token_usage": token_usage
             }
             
         except Exception as e:
@@ -85,10 +91,16 @@ class LLMManager:
             
             response = self.llm.invoke(messages)
             
+            # Extract token usage
+            token_usage = {}
+            if hasattr(response, "llm_output") and response.llm_output:
+                token_usage = response.llm_output.get("token_usage", {})
+            
             return {
                 "answer": response.content,
                 "sources": [],
                 "context_used": False,
+                "token_usage": token_usage,
                 "error": str(e)
             }
             

@@ -56,6 +56,17 @@ const JarvisUI = () => {
   // Added state for chat welcome screen
   const [showChatWelcome, setShowChatWelcome] = useState(false)
 
+  // API connection status
+  const [isOpenAIConnected, setIsOpenAIConnected] = useState(true)
+  const [isRagAvailable, setIsRagAvailable] = useState(true)
+
+  // Token usage tracking
+  const [tokenUsage, setTokenUsage] = useState({
+    promptTokens: 0,
+    completionTokens: 0,
+    totalTokens: 0,
+  })
+
   // Introduction message
   const introMessage =
     "Hi, I'm JARVIS — Timal's personal AI assistant. I'm here to help you explore his work, mindset, and approach to engineering. Timal built me so you can see not just what he's done, but how he thinks. Curious about anything? Just ask."
@@ -317,8 +328,21 @@ const JarvisUI = () => {
           content: msg.content,
         }))
 
+        // Reset connection status on new attempt
+        setIsOpenAIConnected(true)
+        setIsRagAvailable(true)
+
         // Call the backend API
         const response = await queryJarvis(messageToSend, conversationHistory)
+
+        // Update token usage stats
+        if (response.token_usage) {
+          setTokenUsage({
+            promptTokens: response.token_usage.prompt_tokens || 0,
+            completionTokens: response.token_usage.completion_tokens || 0,
+            totalTokens: response.token_usage.total_tokens || 0,
+          })
+        }
 
         // Add response to chat
         setChatMessages((prev) => [
@@ -333,6 +357,10 @@ const JarvisUI = () => {
         simulateAudioVisualization()
       } catch (error) {
         console.error('Error querying JARVIS:', error)
+
+        // Set OpenAI connection as degraded
+        setIsOpenAIConnected(false)
+        setIsRagAvailable(false)
 
         // Show error message
         setChatMessages((prev) => [
@@ -384,8 +412,21 @@ const JarvisUI = () => {
         content: msg.content,
       }))
 
+      // Reset connection status on new attempt
+      setIsOpenAIConnected(true)
+      setIsRagAvailable(true)
+
       // Call the backend API
       const response = await queryJarvis(question, conversationHistory)
+
+      // Update token usage stats
+      if (response.token_usage) {
+        setTokenUsage({
+          promptTokens: response.token_usage.prompt_tokens || 0,
+          completionTokens: response.token_usage.completion_tokens || 0,
+          totalTokens: response.token_usage.total_tokens || 0,
+        })
+      }
 
       // Add response to chat
       setChatMessages((prev) => [
@@ -398,13 +439,17 @@ const JarvisUI = () => {
     } catch (error) {
       console.error('Error querying JARVIS:', error)
 
+      // Set OpenAI connection as degraded
+      setIsOpenAIConnected(false)
+      setIsRagAvailable(false)
+
       // Show error message
       setChatMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
           content:
-            "I'm having trouble connecting to my knowledge base. Please try again later.",
+            "I'm having trouble connecting to my knowledge base. This could be due to API limitations. Please try again later.",
         },
       ])
     } finally {
@@ -1133,8 +1178,8 @@ const JarvisUI = () => {
 
                           <iframe
                             className="absolute left-0 top-0 h-full w-full"
-                            src={`https://www.youtube.com/embed/ql56K3sveqo?autoplay=${videoPlaying ? '1' : '0'}&enablejsapi=1&fs=0&mute=1`}
-                            title="Timal Pathirana Coding Demo"
+                            src={`https://www.youtube.com/embed/Uv5nTwtaYm8?autoplay=${videoPlaying ? '1' : '0'}&enablejsapi=1&fs=0&mute=1`}
+                            title="A timelapse of my coding projects"
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen={false}
@@ -1178,12 +1223,9 @@ const JarvisUI = () => {
                             <span className="text-xs text-cyan-500">
                               {videoPlaying
                                 ? 'NOW PLAYING'
-                                : 'CODING DEMO REEL'}
+                                : 'A usual afternoon in my happy place'}
                             </span>
                           </div>
-                          <span className="mt-1 text-[10px] text-cyan-700">
-                            YouTube Shorts Format
-                          </span>
                         </div>
                       </div>
                     </div>
@@ -1243,18 +1285,6 @@ const JarvisUI = () => {
                         RMIT University, Melbourne
                       </p>
                       <p className="mt-1 text-cyan-200">2018 - 2021</p>
-
-                      <motion.a
-                        href="/BachlorAT.pdf"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-4 inline-flex items-center rounded-md border border-cyan-600 bg-cyan-900/30 px-4 py-2 text-cyan-400 transition-all hover:bg-cyan-800/50"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <FiExternalLink className="mr-2 text-lg" />
-                        <span>View Transcript</span>
-                      </motion.a>
                     </div>
 
                     <div className="mt-8 border-t border-cyan-800/30 pt-6">
@@ -2364,7 +2394,10 @@ const JarvisUI = () => {
                     <div className="flex items-center justify-between text-xs text-cyan-600">
                       <div className="flex items-center">
                         <div className="mr-2 h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-500" />
-                        <span>NEURAL ENGINE ACTIVE</span>
+                        <span>
+                          TOKENS: {tokenUsage.promptTokens} IN /{' '}
+                          {tokenUsage.completionTokens} OUT
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -2583,12 +2616,24 @@ const JarvisUI = () => {
                       <div className="mt-2 flex justify-end text-xs text-cyan-600">
                         <div className="flex flex-col items-end">
                           <div className="flex items-center">
-                            <span>OpenAI link active...</span>
-                            <div className="ml-2 h-1.5 w-1.5 rounded-full bg-green-500" />
+                            <span>
+                              {isOpenAIConnected
+                                ? 'OpenAI link active...'
+                                : 'OpenAI link degraded'}
+                            </span>
+                            <div
+                              className={`ml-2 h-1.5 w-1.5 rounded-full ${isOpenAIConnected ? 'bg-green-500' : 'bg-red-500'}`}
+                            />
                           </div>
                           <div className="mt-1 flex items-center">
-                            <span>Accessing context via RAG...</span>
-                            <div className="ml-2 h-1.5 w-1.5 rounded-full bg-green-500" />
+                            <span>
+                              {isRagAvailable
+                                ? 'Accessing context via RAG...'
+                                : 'Context access unavailable'}
+                            </span>
+                            <div
+                              className={`ml-2 h-1.5 w-1.5 rounded-full ${isRagAvailable ? 'bg-green-500' : 'bg-red-500'}`}
+                            />
                           </div>
                         </div>
                       </div>
@@ -2681,20 +2726,7 @@ const JarvisUI = () => {
                     </li>
                     <li className="flex items-start">
                       <div className="mr-2 mt-1 h-1.5 w-1.5 rounded-full bg-cyan-500" />
-                      <span>Performance reviews and real-world outcomes</span>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="mr-2 mt-1 h-1.5 w-1.5 rounded-full bg-cyan-500" />
-                      <span>
-                        Education journey, including transcript data and career
-                        transition from electrical to software engineering
-                      </span>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="mr-2 mt-1 h-1.5 w-1.5 rounded-full bg-cyan-500" />
-                      <span>
-                        Reflections on team dynamics, leadership, and growth
-                      </span>
+                      <span>Certifications and skills</span>
                     </li>
                     <li className="flex items-start">
                       <div className="mr-2 mt-1 h-1.5 w-1.5 rounded-full bg-cyan-500" />

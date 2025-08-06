@@ -66,6 +66,7 @@ class QueryResponse(BaseModel):
     answer: str
     sources: List[Dict[str, Any]]
     context_used: bool
+    token_usage: Dict[str, int] = {}
 
 
 class UploadResponse(BaseModel):
@@ -131,7 +132,8 @@ async def query_documents(request: QueryRequest):
         return QueryResponse(
             answer=response["answer"],
             sources=response["sources"],
-            context_used=response["context_used"]
+            context_used=response["context_used"],
+            token_usage=response.get("token_usage", {})
         )
     
     except Exception as e:
